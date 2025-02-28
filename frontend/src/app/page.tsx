@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Home() {
-  // Sample episode data
+  // Updated episode data with all episodes locked
   const episodes = [
     {
       id: 1,
@@ -17,6 +17,8 @@ export default function Home() {
       duration: "24:15",
       date: "May 15, 2023",
       videoUrl: "https://example.com/episode1",
+      marketCap: "100K",
+      unlocked: false,
     },
     {
       id: 2,
@@ -26,6 +28,8 @@ export default function Home() {
       duration: "28:42",
       date: "May 22, 2023",
       videoUrl: "https://example.com/episode2",
+      marketCap: "150K",
+      unlocked: false,
     },
     {
       id: 3,
@@ -35,6 +39,30 @@ export default function Home() {
       duration: "31:08",
       date: "May 29, 2023",
       videoUrl: "https://example.com/episode3",
+      marketCap: "200K",
+      unlocked: false,
+    },
+    {
+      id: 4,
+      title: "Whales Enter the Fray",
+      description: "The ancient beings of immense wealth begin to move, causing ripples across the cryptoverse.",
+      thumbnail: "/episodes/ep4-thumbnail.jpg",
+      duration: "26:33",
+      date: "June 5, 2023",
+      videoUrl: "https://example.com/episode4",
+      marketCap: "250K",
+      unlocked: false,
+    },
+    {
+      id: 5,
+      title: "The Prophecy Unfolds",
+      description: "Ancient scrolls of the blockchain reveal a prophecy that could change the fate of Trump Token forever.",
+      thumbnail: "/episodes/ep5-thumbnail.jpg",
+      duration: "33:21",
+      date: "June 12, 2023",
+      videoUrl: "https://example.com/episode5",
+      marketCap: "300K",
+      unlocked: false,
     },
   ];
 
@@ -109,14 +137,20 @@ export default function Home() {
             <p className="text-muted-foreground max-w-[700px]">
               Follow the epic tale of the cryptoverse through our video episodes, chronicling the rise of Trump Token and the quest for Elon, the Memelord.
             </p>
+            <div className="flex items-center space-x-2 mt-2">
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              <span className="text-sm text-muted-foreground">Unlocked</span>
+              <div className="w-3 h-3 rounded-full bg-yellow-500 ml-4"></div>
+              <span className="text-sm text-muted-foreground">Locked (Market Cap Milestone Required)</span>
+            </div>
           </div>
 
           <Tabs defaultValue="all" className="w-full">
             <div className="flex justify-center mb-8">
               <TabsList>
                 <TabsTrigger value="all">All Episodes</TabsTrigger>
-                <TabsTrigger value="latest">Latest</TabsTrigger>
-                <TabsTrigger value="popular">Most Popular</TabsTrigger>
+                <TabsTrigger value="unlocked">Unlocked</TabsTrigger>
+                <TabsTrigger value="locked">Coming Soon</TabsTrigger>
               </TabsList>
             </div>
 
@@ -126,6 +160,72 @@ export default function Home() {
                   <Card key={episode.id} className="overflow-hidden bg-muted/50 backdrop-blur-sm border-muted">
                     <div className="relative aspect-video">
                       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-yellow-500/10" />
+                      {episode.unlocked ? (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Button variant="outline" size="icon" className="h-12 w-12 rounded-full bg-background/80 backdrop-blur-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                              <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+                            <span className="sr-only">Play</span>
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="flex flex-col items-center space-y-2 bg-background/80 backdrop-blur-sm p-4 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-yellow-500">
+                              <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <span className="text-sm font-medium">Unlocks at ${episode.marketCap} Market Cap</span>
+                          </div>
+                        </div>
+                      )}
+                      <div className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm px-2 py-1 rounded-full">
+                        <div className="flex items-center space-x-1">
+                          <div className={`w-2 h-2 rounded-full ${episode.unlocked ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+                          <span className="text-xs">{episode.unlocked ? 'Unlocked' : 'Locked'}</span>
+                        </div>
+                      </div>
+                      <div className="absolute bottom-2 right-2 bg-background/80 backdrop-blur-sm text-xs px-2 py-1 rounded">
+                        {episode.duration}
+                      </div>
+                    </div>
+                    <CardHeader>
+                      <CardTitle className="text-xl">{episode.title}</CardTitle>
+                      <CardDescription className="flex justify-between items-center">
+                        <span>{episode.date}</span>
+                        {!episode.unlocked && (
+                          <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
+                            ${episode.marketCap} Market Cap
+                          </Badge>
+                        )}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground">{episode.description}</p>
+                    </CardContent>
+                    <CardFooter>
+                      {episode.unlocked ? (
+                        <Button variant="ghost" asChild className="w-full">
+                          <Link href={episode.videoUrl}>Watch Episode</Link>
+                        </Button>
+                      ) : (
+                        <Button variant="ghost" disabled className="w-full opacity-70">
+                          Episode Locked
+                        </Button>
+                      )}
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="unlocked" className="space-y-8">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {episodes.filter(ep => ep.unlocked).map((episode) => (
+                  <Card key={episode.id} className="overflow-hidden bg-muted/50 backdrop-blur-sm border-muted">
+                    <div className="relative aspect-video">
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-yellow-500/10" />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <Button variant="outline" size="icon" className="h-12 w-12 rounded-full bg-background/80 backdrop-blur-sm">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
@@ -133,6 +233,12 @@ export default function Home() {
                           </svg>
                           <span className="sr-only">Play</span>
                         </Button>
+                      </div>
+                      <div className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm px-2 py-1 rounded-full">
+                        <div className="flex items-center space-x-1">
+                          <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                          <span className="text-xs">Unlocked</span>
+                        </div>
                       </div>
                       <div className="absolute bottom-2 right-2 bg-background/80 backdrop-blur-sm text-xs px-2 py-1 rounded">
                         {episode.duration}
@@ -153,24 +259,28 @@ export default function Home() {
                   </Card>
                 ))}
               </div>
-              <div className="flex justify-center">
-                <Button variant="outline">Load More Episodes</Button>
-              </div>
             </TabsContent>
 
-            <TabsContent value="latest" className="space-y-8">
+            <TabsContent value="locked" className="space-y-8">
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {episodes.slice(0, 1).map((episode) => (
+                {episodes.filter(ep => !ep.unlocked).map((episode) => (
                   <Card key={episode.id} className="overflow-hidden bg-muted/50 backdrop-blur-sm border-muted">
                     <div className="relative aspect-video">
                       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-yellow-500/10" />
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <Button variant="outline" size="icon" className="h-12 w-12 rounded-full bg-background/80 backdrop-blur-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                            <polygon points="5 3 19 12 5 21 5 3" />
+                        <div className="flex flex-col items-center space-y-2 bg-background/80 backdrop-blur-sm p-4 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-yellow-500">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                           </svg>
-                          <span className="sr-only">Play</span>
-                        </Button>
+                          <span className="text-sm font-medium">Unlocks at ${episode.marketCap} Market Cap</span>
+                        </div>
+                      </div>
+                      <div className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm px-2 py-1 rounded-full">
+                        <div className="flex items-center space-x-1">
+                          <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                          <span className="text-xs">Locked</span>
+                        </div>
                       </div>
                       <div className="absolute bottom-2 right-2 bg-background/80 backdrop-blur-sm text-xs px-2 py-1 rounded">
                         {episode.duration}
@@ -178,49 +288,19 @@ export default function Home() {
                     </div>
                     <CardHeader>
                       <CardTitle className="text-xl">{episode.title}</CardTitle>
-                      <CardDescription>{episode.date}</CardDescription>
+                      <CardDescription className="flex justify-between items-center">
+                        <span>{episode.date}</span>
+                        <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
+                          ${episode.marketCap} Market Cap
+                        </Badge>
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground">{episode.description}</p>
                     </CardContent>
                     <CardFooter>
-                      <Button variant="ghost" asChild className="w-full">
-                        <Link href={episode.videoUrl}>Watch Episode</Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="popular" className="space-y-8">
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {episodes.slice(1, 3).map((episode) => (
-                  <Card key={episode.id} className="overflow-hidden bg-muted/50 backdrop-blur-sm border-muted">
-                    <div className="relative aspect-video">
-                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-yellow-500/10" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Button variant="outline" size="icon" className="h-12 w-12 rounded-full bg-background/80 backdrop-blur-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                            <polygon points="5 3 19 12 5 21 5 3" />
-                          </svg>
-                          <span className="sr-only">Play</span>
-                        </Button>
-                      </div>
-                      <div className="absolute bottom-2 right-2 bg-background/80 backdrop-blur-sm text-xs px-2 py-1 rounded">
-                        {episode.duration}
-                      </div>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="text-xl">{episode.title}</CardTitle>
-                      <CardDescription>{episode.date}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground">{episode.description}</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="ghost" asChild className="w-full">
-                        <Link href={episode.videoUrl}>Watch Episode</Link>
+                      <Button variant="ghost" disabled className="w-full opacity-70">
+                        Episode Locked
                       </Button>
                     </CardFooter>
                   </Card>
@@ -228,6 +308,62 @@ export default function Home() {
               </div>
             </TabsContent>
           </Tabs>
+
+          {/* Market Cap Progress Section - updated to show not started */}
+          <div className="mt-16 bg-muted/30 p-6 rounded-lg backdrop-blur-sm">
+            <h3 className="text-xl font-bold mb-4 text-center">Saga Unlock Progress</h3>
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Current Market Cap</span>
+                  <div className="flex items-center">
+                    <span className="font-medium text-muted-foreground">Not launched yet</span>
+                    <Badge variant="outline" className="ml-2 bg-blue-500/10 text-blue-400 border-blue-500/20">
+                      Coming Soon
+                    </Badge>
+                  </div>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-gray-500 to-gray-400 rounded-full opacity-30" style={{ width: '0%' }}></div>
+                </div>
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>$0</span>
+                  <span>$100K</span>
+                  <span>$150K</span>
+                  <span>$200K</span>
+                  <span>$250K</span>
+                  <span>$300K</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-5 gap-2">
+                {episodes.map((episode) => (
+                  <div key={episode.id} className="flex flex-col items-center">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-muted text-muted-foreground border border-muted-foreground/30">
+                      {episode.id}
+                    </div>
+                    <div className="text-xs mt-1 text-center">${episode.marketCap}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4 p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                <div className="flex items-start">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-blue-400 mr-2 mt-0.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-medium text-blue-400">Token Launch Pending</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      The Token has not yet been launched. Episodes will unlock automatically as market cap milestones are reached.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
