@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @theme {
   --font-sans: var(--font-geist-sans);
@@ -6,6 +8,9 @@
 }
 
 :root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 10, 10, 30;
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -17,8 +22,35 @@
   }
 }
 
+.dark {
+  --foreground: 255, 255, 255;
+  --background: 10, 10, 20;
+  --card: 30, 30, 40;
+  --card-foreground: 255, 255, 255;
+  --popover: 30, 30, 40;
+  --popover-foreground: 255, 255, 255;
+  --primary: 255, 215, 0;
+  --primary-foreground: 0, 0, 0;
+  --secondary: 30, 30, 40;
+  --secondary-foreground: 255, 255, 255;
+  --muted: 30, 30, 40;
+  --muted-foreground: 150, 150, 150;
+  --accent: 30, 30, 40;
+  --accent-foreground: 255, 255, 255;
+  --destructive: 255, 69, 0;
+  --destructive-foreground: 255, 255, 255;
+  --border: 40, 40, 50;
+  --input: 30, 30, 40;
+  --ring: 255, 215, 0;
+}
+
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
   font-family: Arial, Helvetica, sans-serif;
 }

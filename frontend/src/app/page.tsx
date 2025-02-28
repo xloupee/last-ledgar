@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -5,8 +7,17 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  // Add client-side rendering state
+  const [isClient, setIsClient] = useState(false);
+
+  // Set isClient to true when component mounts
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Updated episode data with all episodes locked
   const episodes = [
     {
@@ -65,6 +76,18 @@ export default function Home() {
       unlocked: false,
     },
   ];
+
+  // If not client-side yet, show a simple loading state
+  if (!isClient) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Loading...</h1>
+          <p>The Cryptoverse Saga is initializing...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
