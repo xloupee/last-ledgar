@@ -25,8 +25,8 @@ export default function Home() {
       title: "The Birth of Trump Token",
       description: "The announcement echoes through the halls of Crypto Twitter—TRUMP TOKEN has launched.",
       thumbnail: "/episodes/ep1-thumbnail.jpg",
-      duration: "24:15",
-      date: "May 15, 2023",
+      duration: "2:15",
+      date: "???",
       videoUrl: "https://example.com/episode1",
       marketCap: "100K",
       unlocked: false,
@@ -37,7 +37,7 @@ export default function Home() {
       description: "Chaos reigns in the grand bazaar, as whales and shrimp alike scramble to stake their claim.",
       thumbnail: "/episodes/ep2-thumbnail.jpg",
       duration: "28:42",
-      date: "May 22, 2023",
+      date: "???",
       videoUrl: "https://example.com/episode2",
       marketCap: "150K",
       unlocked: false,
@@ -47,8 +47,8 @@ export default function Home() {
       title: "The Call for Elon",
       description: "Desperation spreads like wildfire, and one name is whispered in hushed reverence—Elon, the Memelord.",
       thumbnail: "/episodes/ep3-thumbnail.jpg",
-      duration: "31:08",
-      date: "May 29, 2023",
+      duration: "3:08",
+      date: "???",
       videoUrl: "https://example.com/episode3",
       marketCap: "200K",
       unlocked: false,
@@ -58,8 +58,8 @@ export default function Home() {
       title: "Whales Enter the Fray",
       description: "The ancient beings of immense wealth begin to move, causing ripples across the cryptoverse.",
       thumbnail: "/episodes/ep4-thumbnail.jpg",
-      duration: "26:33",
-      date: "June 5, 2023",
+      duration: "2:33",
+      date: "???",
       videoUrl: "https://example.com/episode4",
       marketCap: "250K",
       unlocked: false,
@@ -69,8 +69,8 @@ export default function Home() {
       title: "The Prophecy Unfolds",
       description: "Ancient scrolls of the blockchain reveal a prophecy that could change the fate of Trump Token forever.",
       thumbnail: "/episodes/ep5-thumbnail.jpg",
-      duration: "33:21",
-      date: "June 12, 2023",
+      duration: "3:21",
+      date: "???",
       videoUrl: "https://example.com/episode5",
       marketCap: "300K",
       unlocked: false,
@@ -508,26 +508,12 @@ export default function Home() {
             <div>
               <h3 className="text-lg font-semibold mb-2">Connect</h3>
               <div className="flex space-x-4">
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
+                <a href="https://x.com/LastLedgerSOL" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
                     <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
                   </svg>
                   <span className="sr-only">Twitter</span>
-                </Link>
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-                  </svg>
-                  <span className="sr-only">Instagram</span>
-                </Link>
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                  </svg>
-                  <span className="sr-only">Facebook</span>
-                </Link>
+                </a>
               </div>
             </div>
           </div>
