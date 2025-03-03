@@ -12,13 +12,28 @@ import { useEffect, useState } from "react";
 export default function Home() {
   // Add client-side rendering state
   const [isClient, setIsClient] = useState(false);
+  // Add state for copy feedback
+  const [copied, setCopied] = useState(false);
 
   // Set isClient to true when component mounts
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Updated episode data with all episodes locked
+  // Function to copy address to clipboard
+  const copyToClipboard = () => {
+    const address = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"; // Replace with your actual address
+    navigator.clipboard.writeText(address)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+  };
+
+  // Updated episode data with all episodes locked and market cap goals every 200k
   const episodes = [
     {
       id: 1,
@@ -28,7 +43,7 @@ export default function Home() {
       duration: "2:15",
       date: "???",
       videoUrl: "https://example.com/episode1",
-      marketCap: "100K",
+      marketCap: "200K",
       unlocked: false,
     },
     {
@@ -39,7 +54,7 @@ export default function Home() {
       duration: "28:42",
       date: "???",
       videoUrl: "https://example.com/episode2",
-      marketCap: "150K",
+      marketCap: "400K",
       unlocked: false,
     },
     {
@@ -50,7 +65,7 @@ export default function Home() {
       duration: "3:08",
       date: "???",
       videoUrl: "https://example.com/episode3",
-      marketCap: "200K",
+      marketCap: "600K",
       unlocked: false,
     },
     {
@@ -61,7 +76,7 @@ export default function Home() {
       duration: "2:33",
       date: "???",
       videoUrl: "https://example.com/episode4",
-      marketCap: "250K",
+      marketCap: "800K",
       unlocked: false,
     },
     {
@@ -72,7 +87,7 @@ export default function Home() {
       duration: "3:21",
       date: "???",
       videoUrl: "https://example.com/episode5",
-      marketCap: "300K",
+      marketCap: "1M",
       unlocked: false,
     },
   ];
@@ -91,6 +106,28 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Support Alert Banner */}
+      <div className="sticky top-0 z-50 w-full bg-yellow-500/90 backdrop-blur-sm text-black py-2 px-4">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v4" />
+              <path d="M12 16h.01" />
+            </svg>
+            <p className="text-sm font-medium">Support the Cryptoverse Saga: <span className="font-mono bg-black/10 px-2 py-1 rounded">0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D</span></p>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="bg-black/10 border-black/20 text-black hover:bg-black/20 mt-2 sm:mt-0"
+            onClick={copyToClipboard}
+          >
+            {copied ? "Copied!" : "Copy Address"}
+          </Button>
+        </div>
+      </div>
+      
       {/* Hero Section */}
       <section className="relative w-full py-24 md:py-32 overflow-hidden bg-gradient-to-b from-background to-background/80">
         <div className="absolute inset-0 z-0 opacity-30">
@@ -351,11 +388,11 @@ export default function Home() {
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>$0</span>
-                  <span>$100K</span>
-                  <span>$150K</span>
                   <span>$200K</span>
-                  <span>$250K</span>
-                  <span>$300K</span>
+                  <span>$400K</span>
+                  <span>$600K</span>
+                  <span>$800K</span>
+                  <span>$1M</span>
                 </div>
               </div>
 
