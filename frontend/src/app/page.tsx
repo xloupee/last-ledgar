@@ -59,7 +59,7 @@ export default function Home() {
       duration: "28:42",
       date: "???",
       videoUrl: "https://example.com/episode2",
-      marketCap: "400K",
+      marketCap: "200K",
       unlocked: false,
     },
     {
@@ -390,7 +390,7 @@ export default function Home() {
             </TabsContent>
           </Tabs>
 
-          {/* Market Cap Progress Section - updated to show first episode unlocked */}
+          {/* Market Cap Progress Section - updated to show not started */}
           <div className="mt-16 bg-muted/30 p-6 rounded-lg backdrop-blur-sm">
             <h3 className="text-xl font-bold mb-4 text-center">Saga Unlock Progress</h3>
             <div className="space-y-6">
@@ -398,14 +398,14 @@ export default function Home() {
                 <div className="flex justify-between text-sm">
                   <span>Current Market Cap</span>
                   <div className="flex items-center">
-                    <span className="font-medium">$200K</span>
-                    <Badge variant="outline" className="ml-2 bg-green-500/10 text-green-400 border-green-500/20">
-                      First Episode Unlocked
+                    <span className="font-medium text-muted-foreground">Not launched yet</span>
+                    <Badge variant="outline" className="ml-2 bg-blue-500/10 text-blue-400 border-blue-500/20">
+                      Coming Soon
                     </Badge>
                   </div>
                 </div>
                 <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full" style={{ width: '20%' }}></div>
+                  <div className="h-full bg-gradient-to-r from-gray-500 to-gray-400 rounded-full opacity-30" style={{ width: '0%' }}></div>
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>$0</span>
@@ -420,7 +420,7 @@ export default function Home() {
               <div className="grid grid-cols-5 gap-2">
                 {episodes.map((episode) => (
                   <div key={episode.id} className="flex flex-col items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${episode.unlocked ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-muted text-muted-foreground border border-muted-foreground/30'}`}>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-muted text-muted-foreground border border-muted-foreground/30">
                       {episode.id}
                     </div>
                     <div className="text-xs mt-1 text-center">${episode.marketCap}</div>
@@ -428,17 +428,17 @@ export default function Home() {
                 ))}
               </div>
 
-              <div className="mt-4 p-4 bg-green-500/10 rounded-lg border border-green-500/20">
+              <div className="mt-4 p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
                 <div className="flex items-start">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-green-400 mr-2 mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-blue-400 mr-2 mt-0.5">
                     <circle cx="12" cy="12" r="10" />
                     <path d="M12 16v-4" />
                     <path d="M12 8h.01" />
                   </svg>
                   <div>
-                    <p className="text-sm font-medium text-green-400">First Episode Available Now!</p>
+                    <p className="text-sm font-medium text-blue-400">Token Launch Pending</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      The first episode has been unlocked. Watch now to begin the saga! Future episodes will unlock as market cap milestones are reached.
+                      The Token has not yet been launched. Episodes will unlock automatically as market cap milestones are reached.
                     </p>
                   </div>
                 </div>
