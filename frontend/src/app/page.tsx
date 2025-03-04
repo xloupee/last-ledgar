@@ -126,7 +126,7 @@ export default function Home() {
               <path d="M12 8v4" />
               <path d="M12 16h.01" />
             </svg>
-            <p className="text-sm font-medium">Support the Cryptoverse Saga: <span className="font-mono bg-black/10 px-2 py-1 rounded">0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D</span></p>
+            <p className="text-sm font-medium">Support the Cryptoverse Saga: <span className="font-mono bg-black/10 px-2 py-1 rounded">Ga6qAkDLtjXmZ7h8LCUUfRpKutPi4Zgj7LXY1qRdpump</span></p>
           </div>
           <Button 
             variant="outline" 
