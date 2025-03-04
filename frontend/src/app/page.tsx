@@ -8,12 +8,17 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { VideoPlayer } from "@/components/VideoPlayer";
+import { VideoModal } from "@/components/VideoModal";
 
 export default function Home() {
   // Add client-side rendering state
   const [isClient, setIsClient] = useState(false);
   // Add state for copy feedback
   const [copied, setCopied] = useState(false);
+  // Add this state inside the Home component
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [selectedEpisode, setSelectedEpisode] = useState<typeof episodes[0] | null>(null);
 
   // Set isClient to true when component mounts
   useEffect(() => {
@@ -33,18 +38,18 @@ export default function Home() {
       });
   };
 
-  // Updated episode data with all episodes locked and market cap goals every 200k
+  // Updated episode data with episode 1 unlocked and using S3 video link
   const episodes = [
     {
       id: 1,
       title: "The Birth of Trump Token",
       description: "The announcement echoes through the halls of Crypto Twitter—TRUMP TOKEN has launched.",
-      thumbnail: "/episodes/ep1-thumbnail.jpg",
-      duration: "2:15",
-      date: "???",
-      videoUrl: "https://example.com/episode1",
+      thumbnail: "https://placehold.co/640x360/333/FFF?text=Episode+1", // placeholder image
+      duration: "0:50",
+      date: "March 3, 2025",
+      videoUrl: "https://lastledgar.s3.us-east-1.amazonaws.com/episode1.mp4?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQD9lmWiU9jWIhrEHENPbx%2BUuFvlbJQUxm0XvIwX%2FK5xJgIgQd5GHFwj6MMMZJpH8BsiwtUM5WEfMx6BE%2B8XjcptftAqhgMI4f%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2ODg1NjcyNzY5MTEiDNb%2FjtKzo368hPEkLSraAgBwClfZ4CzYWcDUP61X0mOni03eEfkVIDZVl5nU1ykKMXbKqez9B8kYSO982jgbZhAWMCnVE1BoYU2jrbBS18VYKIzuGKk0y2A7x5EcDdXyAHbwbkNSXm5DHn%2BAQayVn0EtorKIRxpnC4YfLJ5PGKnna%2Fep0P7iAxiR7sxfOF%2BjP79EloahYF9WHM3NpQ1nENtU6CbbWGG4JxfmX762fUdQkkmeqJ18h69FTIjrM%2Bw3XeLP1VuzZSo4WSfp2qmeRpOUqQVadmGsRAfW51Xw37WKj3me%2F%2BLtn0k4NQvDMRosZaLoaO3grlnxHZlpf2ssb%2BY4FDXyPBWqV1gDy4Fmq99t9RicxWXMsFiVAiuRB1h5yTwFnB8xSipERVSgA9JLe3H5FTfxh4wlt%2FLeGjoZRxZxAGabknOlEkMpBAX28qJfwopAvzRV8JA%2BoErKzQQw3KtkENN0%2FBDlJdAw6faYvgY6jwLW3sVtHUjWkQ5tjhus5oH07tUtcD0RQiJ8LsC7cgCqrgHPfkvLplakMc8KNSyMejz2g4Rym8Vc16FX2Yhsb2RwJ5p4Tjsvwqs9wvuTIETy2SvpJoKJ7eVoTwHHiZ07vrfOybJiLnI35FpnpUlIyi9imclc3ESrrHRGDA%2F%2BDnfAUv6FTpNdlHnqc2SMn4Y5H87ia6GgwCb52U3SHoE2iITHn34Uu5XajbLm0G1r0%2F8A77qGzLWIez0MC8ZXoyQC6ul08hsUOS3DZVTqrlA6HNopjrGqnleyv82lhV%2B9Y7lJ2UKpTyJfTNQZNMYWwOTRQqlwCOo64Ax7IxcXxPbHg15sWxm%2Fiq0fGRis%2Fnem0kl4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA2AUOO2VXS4TKZ343%2F20250303%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250303T235553Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=860755fbce660b6ce149d66dc88afc6ed58a3b23d6992e97ba6d201bd3bc7e48",
       marketCap: "200K",
-      unlocked: false,
+      unlocked: true,
     },
     {
       id: 2,
@@ -54,7 +59,7 @@ export default function Home() {
       duration: "28:42",
       date: "???",
       videoUrl: "https://example.com/episode2",
-      marketCap: "400K",
+      marketCap: "200K",
       unlocked: false,
     },
     {
@@ -104,6 +109,12 @@ export default function Home() {
     );
   }
 
+  // Add a function to open the modal with a specific episode
+  const openVideoModal = (episode: typeof episodes[0]) => {
+    setSelectedEpisode(episode);
+    setVideoModalOpen(true);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Support Alert Banner */}
@@ -146,7 +157,8 @@ export default function Home() {
               Where fortunes are forged in fire and lost to the abyss in the blink of an eye.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button size="lg" className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black hover:text-white">
+              <Button size="lg" className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black hover:text-white" 
+                onClick={() => episodes[0].unlocked && openVideoModal(episodes[0])}>
                 Watch Latest Episode
               </Button>
               <Button size="lg" variant="outline">
@@ -160,7 +172,7 @@ export default function Home() {
       {/* Story Synopsis */}
       <section className="w-full py-16 bg-muted/50">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center justify-center">
             <div className="space-y-4">
               <h2 className="text-3xl font-bold tracking-tighter">The Story So Far</h2>
               <p className="text-muted-foreground">
@@ -173,18 +185,21 @@ export default function Home() {
                 Desperation spread like wildfire, and as the cries of ruin echoed across the land, one name was whispered in hushed reverence—Elon, the Memelord. The Supreme Being of the cryptoverse, wielder of the Doge Scepter, he alone had the power to restore balance.
               </p>
             </div>
-            <div className="relative aspect-video overflow-hidden rounded-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-yellow-500/20 rounded-lg" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Button variant="outline" size="icon" className="h-16 w-16 rounded-full bg-background/80 backdrop-blur-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-                    <polygon points="5 3 19 12 5 21 5 3" />
-                  </svg>
-                  <span className="sr-only">Play</span>
-                </Button>
+
+            {episodes[0].unlocked && (
+              <div className="space-y-4">
+                <Badge className="px-4 py-1 text-sm" variant="outline">Now Playing</Badge>
+                <h2 className="text-3xl font-bold tracking-tighter">{episodes[0].title}</h2>
+                <p className="text-muted-foreground">
+                  {episodes[0].description}
+                </p>
+                <VideoPlayer 
+                  videoUrl={episodes[0].videoUrl} 
+                  title={episodes[0].title} 
+                  poster={episodes[0].thumbnail}
+                />
               </div>
-              <div className="absolute inset-0 border border-white/10 rounded-lg" />
-            </div>
+            )}
           </div>
         </div>
       </section>
@@ -219,26 +234,25 @@ export default function Home() {
                 {episodes.map((episode) => (
                   <Card key={episode.id} className="overflow-hidden bg-muted/50 backdrop-blur-sm border-muted">
                     <div className="relative aspect-video">
-                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-yellow-500/10" />
                       {episode.unlocked ? (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Button variant="outline" size="icon" className="h-12 w-12 rounded-full bg-background/80 backdrop-blur-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                              <polygon points="5 3 19 12 5 21 5 3" />
-                            </svg>
-                            <span className="sr-only">Play</span>
-                          </Button>
-                        </div>
+                        <VideoPlayer 
+                          videoUrl={episode.videoUrl} 
+                          title={episode.title} 
+                          poster={episode.thumbnail}
+                        />
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="flex flex-col items-center space-y-2 bg-background/80 backdrop-blur-sm p-4 rounded-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-yellow-500">
-                              <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                            </svg>
-                            <span className="text-sm font-medium">Unlocks at ${episode.marketCap} Market Cap</span>
+                        <>
+                          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-yellow-500/10" />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="flex flex-col items-center space-y-2 bg-background/80 backdrop-blur-sm p-4 rounded-lg">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-yellow-500">
+                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                              </svg>
+                              <span className="text-sm font-medium">Unlocks at ${episode.marketCap} Market Cap</span>
+                            </div>
                           </div>
-                        </div>
+                        </>
                       )}
                       <div className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm px-2 py-1 rounded-full">
                         <div className="flex items-center space-x-1">
@@ -252,22 +266,22 @@ export default function Home() {
                     </div>
                     <CardHeader>
                       <CardTitle className="text-xl">{episode.title}</CardTitle>
-                      <CardDescription className="flex justify-between items-center">
+                      <div className="flex justify-between items-center text-sm text-muted-foreground mt-1">
                         <span>{episode.date}</span>
                         {!episode.unlocked && (
                           <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
                             ${episode.marketCap} Market Cap
                           </Badge>
                         )}
-                      </CardDescription>
+                      </div>
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground">{episode.description}</p>
                     </CardContent>
                     <CardFooter>
                       {episode.unlocked ? (
-                        <Button variant="ghost" asChild className="w-full">
-                          <Link href={episode.videoUrl}>Watch Episode</Link>
+                        <Button variant="ghost" onClick={() => openVideoModal(episode)} className="w-full">
+                          Watch Episode
                         </Button>
                       ) : (
                         <Button variant="ghost" disabled className="w-full opacity-70">
@@ -306,14 +320,21 @@ export default function Home() {
                     </div>
                     <CardHeader>
                       <CardTitle className="text-xl">{episode.title}</CardTitle>
-                      <CardDescription>{episode.date}</CardDescription>
+                      <div className="flex justify-between items-center text-sm text-muted-foreground mt-1">
+                        <span>{episode.date}</span>
+                        {!episode.unlocked && (
+                          <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
+                            ${episode.marketCap} Market Cap
+                          </Badge>
+                        )}
+                      </div>
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground">{episode.description}</p>
                     </CardContent>
                     <CardFooter>
-                      <Button variant="ghost" asChild className="w-full">
-                        <Link href={episode.videoUrl}>Watch Episode</Link>
+                      <Button variant="ghost" onClick={() => openVideoModal(episode)} className="w-full">
+                        Watch Episode
                       </Button>
                     </CardFooter>
                   </Card>
@@ -348,12 +369,12 @@ export default function Home() {
                     </div>
                     <CardHeader>
                       <CardTitle className="text-xl">{episode.title}</CardTitle>
-                      <CardDescription className="flex justify-between items-center">
+                      <div className="flex justify-between items-center text-sm text-muted-foreground mt-1">
                         <span>{episode.date}</span>
                         <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
                           ${episode.marketCap} Market Cap
                         </Badge>
-                      </CardDescription>
+                      </div>
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground">{episode.description}</p>
@@ -560,6 +581,18 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Video Modal */}
+      {selectedEpisode && (
+        <VideoModal
+          isOpen={videoModalOpen}
+          onClose={() => setVideoModalOpen(false)}
+          videoUrl={selectedEpisode.videoUrl}
+          title={selectedEpisode.title}
+          description={selectedEpisode.description}
+          poster={selectedEpisode.thumbnail}
+        />
+      )}
     </div>
   );
 }
