@@ -22,7 +22,7 @@ export default function Home() {
 
   // Function to copy address to clipboard
   const copyToClipboard = () => {
-    const address = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"; // Replace with your actual address
+    const address = "Ga6qAkDLtjXmZ7h8LCUUfRpKutPi4Zgj7LXY1qRdpump"; // Replace with your actual address
     navigator.clipboard.writeText(address)
       .then(() => {
         setCopied(true);
